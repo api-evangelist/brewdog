@@ -1,0 +1,46 @@
+generated: '2026-08-02'
+method: probed
+source: live requests against https://brewdog.com/api/ucp/mcp and the storefront
+format: json-rpc-2.0
+note: BrewDog publishes no OpenAPI and no error reference page, so this catalogue is
+  not derived from a spec. It records error envelopes actually observed on the live
+  surface plus the one failure mode BrewDog documents in /agents.md. It is NOT
+  RFC 9457 problem+json.
+envelope:
+  media_type: application/json; charset=utf-8
+  shape: '{"jsonrpc":"2.0","id":<id>,"error":{"code":<int>,"message":<string>,"data":{"code":<string>,"content":<string>,"continue_url":<url>}}}'
+problems:
+- status: 422
+  code: -32001
+  title: UCP discovery failed
+  data_code: invalid_profile_url
+  detail: 'Unable to fetch agent profile: Missing profile uri'
+  remediation: Supply a resolvable UCP agent profile URI with the request before
+    calling tools/list or any tool.
+  observed: true
+  observed_on:
+  - POST https://brewdog.com/api/ucp/mcp {"method":"tools/list"}
+  - POST https://brewdog.com/api/ucp/mcp {"method":"initialize"}
+  - POST https://b32dd2-83.myshopify.com/api/ucp/mcp {"method":"tools/list"}
+  source: probed
+- status: 429
+  title: Rate limited
+  detail: The MCP endpoint is rate-limited per IP.
+  remediation: Back off and retry on 429 responses.
+  observed: false
+  source: https://brewdog.com/agents.md
+- status: 404
+  title: Not found
+  detail: Returned for storefront paths and /.well-known documents that BrewDog does
+    not serve (security.txt, agent-card.json, api-catalog, ai-plugin.json,
+    /policies/privacy-policy).
+  observed: true
+  source: probed
+- status: 406
+  title: Not acceptable
+  detail: Observed when following https://brewdog.com/account/login through to the
+    Shopify-hosted customer account origin with a non-browser Accept header.
+  observed: true
+  source: probed
+x-evidence:
+  fetched: '2026-08-02'

@@ -1,23 +1,143 @@
 aid: brewdog
 name: BrewDog
-description: 'BrewDog is a company surfaced via the API Evangelist harvest backlog (source: secondary-market)
-  and added to the network as a stub for full-pipeline profiling.'
+description: 'BrewDog PLC (company no. SC311560) is a Scottish craft brewer, bar and
+  hotel operator headquartered at Balmacassie Commercial Park, Ellon, Aberdeenshire,
+  known for Punk IPA, Hazy Jane and Lost Lager, its Equity for Punks crowdfunding
+  rounds, and its openly published DIY Dog recipe archive. BrewDog does not run a
+  conventional developer program, but its direct-to-consumer store at brewdog.com
+  is a Shopify storefront that ships a real agent-facing API surface: a published
+  /llms.txt and /agents.md, a Universal Commerce Protocol (UCP) merchant profile at
+  /.well-known/ucp, a UCP-over-MCP endpoint at /api/ucp/mcp, Shopify Customer Account
+  OpenID Connect discovery at /.well-known/openid-configuration, and unauthenticated
+  read-only storefront product JSON endpoints that BrewDog documents for agents itself.'
 url: https://raw.githubusercontent.com/api-evangelist/brewdog/refs/heads/main/apis.yml
+image: https://cdn.shopify.com/s/files/1/0822/7281/3382/files/BrewDogLogo.png?v=1724795739
 x-type: company
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
+x-tier: profiled
+x-tier-reason: enrichment-pipeline
+x-notice: 'As published in the brewdog.com site footer (fetched 2026-08-02): "Clare
+  Kennedy, Ian Partridge and Ben Browne were appointed Joint Administrators of BrewDog
+  plc (the Company)." BrewDog PLC is operating in administration; see https://brewdog.com/pages/important-notice.'
 specificationVersion: '0.20'
 created: '2026-08-02'
 modified: '2026-08-02'
 tags:
 - Company
-apis: []
+- Food and Beverage
+- Beer
+- Brewing
+- Retail
+- eCommerce
+- Consumer Packaged Goods
+- Hospitality
+- Agentic Commerce
+- Shopify
+apis:
+- name: BrewDog Agentic Commerce (UCP over MCP)
+  description: 'BrewDog''s Universal Commerce Protocol shopping service, exposed over
+    MCP at https://brewdog.com/api/ucp/mcp and advertised by the store''s own
+    /.well-known/ucp merchant profile and /agents.md. Supports UCP versions 2026-04-08
+    and 2026-01-23 with the cart, checkout, fulfillment, discount, order and catalog
+    search/lookup capabilities. tools/list is gated on an agent profile URI, so the
+    live tool schemas require an identified agent; the tool set is declared by the
+    OpenRPC schema the merchant profile points at.'
+  humanURL: https://brewdog.com/agents.md
+  baseURL: https://brewdog.com/api/ucp/mcp
+  tags:
+  - Agentic Commerce
+  - MCP
+  - UCP
+  - Shopping
+  - Checkout
+  properties:
+  - type: MCPServer
+    url: mcp/brewdog-mcp.yml
+  - type: WellKnown
+    url: well-known/brewdog-well-known.yml
+- name: BrewDog Storefront Product JSON
+  description: 'The unauthenticated, read-only product and collection JSON surface of
+    the brewdog.com Shopify storefront, documented by BrewDog for agents in
+    /llms.txt and /agents.md: GET /products.json, GET /products/{handle}.json,
+    GET /collections/{handle}/products.json and GET /search?q={query}&type=product.
+    No API key is required and no OpenAPI description is published.'
+  humanURL: https://brewdog.com/agents.md
+  baseURL: https://brewdog.com
+  tags:
+  - Products
+  - Catalog
+  - Retail
+  - JSON
+  - Read Only
+  properties:
+  - type: Examples
+    url: examples/brewdog-products-json.json
+  - type: DataModel
+    url: data-model/brewdog-data-model.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: DomainSecurity
+  url: security/brewdog-domain-security.yml
 - type: Website
-  url: https://forgeglobal.com/brewdog_stock/
+  url: https://www.brewdog.com/
+- type: Documentation
+  url: https://brewdog.com/agents.md
+- type: LLMsTxt
+  url: llms/brewdog-llms.txt
+- type: SignUp
+  url: https://brewdog.com/account
+- type: Login
+  url: https://brewdog.com/account
+- type: Support
+  url: https://brewdog.com/pages/contact-us
+- type: HelpCenter
+  url: https://brewdog-ijnwidpa3ld.gorgias.help/en-GB
+- type: Blog
+  url: https://brewdog.com/blogs/news
+- type: TermsOfService
+  url: https://brewdog.com/pages/terms-and-conditions
+- type: PrivacyPolicy
+  url: https://brewdog.com/pages/cookie-and-privacy-policy
+- type: Careers
+  url: https://jobs.brewdog.com/
+- type: Twitter
+  url: https://x.com/brewdog
+- type: YouTube
+  url: https://www.youtube.com/BrewDogBeer
+- type: Instagram
+  url: https://www.instagram.com/brewdogofficial
+- type: MCPServer
+  url: mcp/brewdog-mcp.yml
+- type: WellKnown
+  url: well-known/brewdog-well-known.yml
+- type: Authentication
+  url: authentication/brewdog-authentication.yml
+- type: OAuthScopes
+  url: scopes/brewdog-scopes.yml
+- type: OpenIDConnect
+  url: well-known/brewdog-openid-configuration.json
+- type: Conventions
+  url: conventions/brewdog-conventions.yml
+- type: Conformance
+  url: conformance/brewdog-conformance.yml
+- type: ErrorCatalog
+  url: errors/brewdog-problem-types.yml
+- type: Lifecycle
+  url: lifecycle/brewdog-lifecycle.yml
+- type: DataModel
+  url: data-model/brewdog-data-model.yml
+- type: Examples
+  url: examples/brewdog-products-json.json
+- type: Packages
+  url: packages/brewdog-packages.yml
+- type: AgentSkill
+  url: skills/_index.yml
+x-enrichment:
+  date: '2026-08-02'
+  status: enriched
+  artifacts_added: 21
+  pass: local-v1

@@ -1,0 +1,54 @@
+generated: '2026-08-02'
+method: probed
+source: https://brewdog.com/.well-known/ucp
+versioning:
+  scheme: dated protocol versions, inherited from the Universal Commerce Protocol
+  current: '2026-04-08'
+  supported:
+  - version: '2026-04-08'
+    profile: https://b32dd2-83.myshopify.com/.well-known/ucp/2026-04-08
+    status: latest stable
+  - version: '2026-01-23'
+    profile: https://b32dd2-83.myshopify.com/.well-known/ucp/2026-01-23
+    status: supported
+  docs: https://brewdog.com/agents.md
+  note: BrewDog operates no version scheme of its own. Older UCP versions remain
+    discoverable through ucp.supported_versions until the platform drops them.
+deprecation:
+  policy_url: null
+  sunset_header: false
+  note: No deprecation or sunset policy is published. Version retirement is governed
+    by the UCP/Shopify platform, not by BrewDog.
+sla:
+  url: null
+  uptime_target: null
+status_page:
+  url: null
+  probed:
+  - url: https://status.brewdog.com
+    result: dns-nxdomain
+  note: BrewDog publishes no status page. The underlying platform status page
+    (status.shopify.com) is Shopify's, not BrewDog's, and is deliberately not
+    recorded as BrewDog's own — so no type=StatusPage pointer is emitted.
+changelog:
+  url: null
+  note: No dated API or agent-surface changelog is published. /blogs/news is a
+    marketing news blog, wired as type=Blog, not as a ChangeLog.
+deprecated_operations: []
+corporate:
+  notice: BrewDog PLC is in administration. The brewdog.com footer states "Clare
+    Kennedy, Ian Partridge and Ben Browne were appointed Joint Administrators of
+    BrewDog plc (the Company)."
+  url: https://brewdog.com/pages/important-notice
+  fetched: '2026-08-02'
+  relevance: Material to the durability of every surface catalogued in this repo.
+x-evidence:
+  fetched: '2026-08-02'
+  probes:
+  - url: https://brewdog.com/.well-known/ucp
+    http_status: 200
+  - url: https://status.brewdog.com
+    http_status: 0
+    note: host does not resolve
+  - url: https://brewdog.com/pages/company-information
+    http_status: 200

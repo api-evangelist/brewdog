@@ -1,0 +1,78 @@
+generated: '2026-08-02'
+method: probed
+source: live probes of brewdog.com discovery surfaces
+note: Asserted only from documents fetched from BrewDog's own hosts. BrewDog publishes
+  no compliance program or certification list, so no Compliance pointer is emitted.
+standards:
+- id: ucp-2026-04-08
+  name: Universal Commerce Protocol (ucp.dev)
+  conforms: true
+  evidence: https://brewdog.com/.well-known/ucp declares ucp.version 2026-04-08 with
+    supported_versions 2026-04-08 and 2026-01-23, service dev.ucp.shopping over the
+    mcp transport.
+- id: mcp
+  name: Model Context Protocol
+  conforms: true
+  evidence: https://brewdog.com/api/ucp/mcp answers JSON-RPC 2.0 with MCP-shaped
+    errors; the UCP profile declares transport "mcp" for dev.ucp.shopping.
+- id: json-rpc-2.0
+  name: JSON-RPC 2.0
+  conforms: true
+  evidence: 'MCP endpoint response envelope: {"jsonrpc":"2.0","id":1,"error":{"code":-32001,...}}'
+- id: oidc-discovery
+  name: OpenID Connect Discovery 1.0
+  conforms: true
+  evidence: https://brewdog.com/.well-known/openid-configuration returns 200 with
+    issuer, authorization_endpoint, token_endpoint, jwks_uri, response_types_supported.
+- id: rfc8414-oauth-as-metadata
+  name: RFC 8414 OAuth 2.0 Authorization Server Metadata
+  conforms: true
+  evidence: https://brewdog.com/.well-known/oauth-authorization-server returns 200
+    with the same metadata document.
+- id: oauth2-pkce
+  name: OAuth 2.0 Authorization Code with PKCE (RFC 7636)
+  conforms: true
+  evidence: code_challenge_methods_supported = [S256] in the OIDC discovery document.
+- id: llmstxt
+  name: llms.txt
+  conforms: true
+  evidence: https://brewdog.com/llms.txt returns 200 text/markdown.
+- id: agents-md
+  name: AGENTS.md / agents.md agent instructions
+  conforms: true
+  evidence: https://brewdog.com/agents.md returns 200 text/markdown and is listed in
+    a dedicated /sitemap_agentic_discovery.xml.
+- id: openapi
+  name: OpenAPI
+  conforms: false
+  evidence: No OpenAPI/Swagger document found on brewdog.com, www.brewdog.com,
+    api.brewdog.com, usa.brewdog.com or de.brewdog.com (/openapi.json, /openapi.yaml,
+    /swagger.json, /api-docs, /docs, /redoc all 404 or non-existent host).
+- id: asyncapi
+  name: AsyncAPI
+  conforms: false
+  evidence: No event, streaming or webhook surface is published by BrewDog.
+- id: a2a
+  name: A2A Agent Card
+  conforms: false
+  evidence: /.well-known/agent-card.json and /.well-known/agent.json return 404 on
+    every BrewDog host probed.
+- id: rfc9116-security-txt
+  name: RFC 9116 security.txt
+  conforms: false
+  evidence: /.well-known/security.txt and /security.txt return 404 on brewdog.com.
+- id: rfc9727-api-catalog
+  name: RFC 9727 /.well-known/api-catalog
+  conforms: false
+  evidence: /.well-known/api-catalog returns 404.
+- id: rfc9457-problem-details
+  name: RFC 9457 Problem Details
+  conforms: false
+  evidence: Errors are JSON-RPC 2.0 error objects, not application/problem+json.
+- id: idempotency
+  name: Idempotency keys
+  conforms: false
+  evidence: No idempotency key header or parameter is documented in /agents.md,
+    /llms.txt or the UCP merchant profile.
+x-evidence:
+  fetched: '2026-08-02'

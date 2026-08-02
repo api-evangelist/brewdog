@@ -1,0 +1,68 @@
+generated: '2026-08-02'
+method: probed
+source: https://brewdog.com/.well-known/openid-configuration
+docs: https://brewdog.com/agents.md
+note: BrewDog publishes no OpenAPI, so this profile is not derived from securitySchemes.
+  It is read from the OIDC/OAuth discovery documents BrewDog serves from its own
+  origin, plus the authentication behaviour observed on each live surface.
+summary:
+  types: [openIdConnect, oauth2, none]
+  api_key_in: []
+  oauth2_flows: [authorizationCode]
+  unauthenticated_surfaces: 2
+schemes:
+- name: shopify-customer-account-oidc
+  type: openIdConnect
+  openIdConnectUrl: https://brewdog.com/.well-known/openid-configuration
+  issuer: https://shopify.com/authentication/82272813382
+  authorizationUrl: https://shopify.com/authentication/82272813382/oauth/authorize
+  tokenUrl: https://shopify.com/authentication/82272813382/oauth/token
+  endSessionUrl: https://shopify.com/authentication/82272813382/logout
+  jwksUri: https://shopify.com/authentication/82272813382/.well-known/jwks.json
+  response_types: [code]
+  grant_types:
+  - authorization_code
+  - refresh_token
+  - urn:ietf:params:oauth:grant-type:jwt-bearer
+  pkce: [S256]
+  token_endpoint_auth_methods: [client_secret_basic]
+  id_token_signing_algs: [RS256]
+  subject_types: [public]
+  claims: [iss, sub, aud, exp, iat, nonce, sid, email, email_verified]
+  scopes: [openid, email, 'customer-account-api:full', 'customer-account-mcp-api:full']
+  sources: [well-known/brewdog-openid-configuration.json]
+  applies_to: BrewDog customer accounts (https://brewdog.com/account)
+- name: ucp-agent-profile
+  type: agent-identity
+  scheme: UCP agent profile URI
+  sources: [mcp/brewdog-mcp.yml]
+  applies_to: https://brewdog.com/api/ucp/mcp
+  description: The UCP MCP endpoint does not accept anonymous JSON-RPC. An unauthenticated
+    tools/list returns HTTP 422 with JSON-RPC error -32001 "UCP discovery failed"
+    (data.code = invalid_profile_url, "Missing profile uri"), so the caller must
+    present a resolvable agent profile URI before any tool is listed or invoked.
+  payment_authorization: Completing a checkout additionally requires contemporaneous
+    buyer approval; the payment handlers are Google Pay, Shopify Card and Shop Pay.
+- name: none
+  type: none
+  sources: [llms/brewdog-agents.md]
+  applies_to: https://brewdog.com/products.json, /products/{handle}.json,
+    /collections/{handle}/products.json, /search?q={query}&type=product
+  description: BrewDog documents its read-only storefront product/collection JSON
+    endpoints for agents as requiring no authentication. Verified with an anonymous
+    GET (HTTP 200, application/json).
+x-evidence:
+  fetched: '2026-08-02'
+  probes:
+  - url: https://brewdog.com/.well-known/openid-configuration
+    http_status: 200
+    content_type: application/json; charset=utf-8
+  - url: https://brewdog.com/.well-known/oauth-authorization-server
+    http_status: 200
+    content_type: application/json; charset=utf-8
+  - url: https://brewdog.com/api/ucp/mcp
+    http_status: 422
+    note: anonymous tools/list rejected
+  - url: https://brewdog.com/products.json?limit=2
+    http_status: 200
+    note: anonymous read succeeded

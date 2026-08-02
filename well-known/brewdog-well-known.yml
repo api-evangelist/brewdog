@@ -1,0 +1,94 @@
+generated: '2026-08-02'
+method: probed
+source: live GET of /.well-known/* and agent-discovery paths on every BrewDog host
+hosts:
+- https://brewdog.com
+- https://www.brewdog.com
+- https://api.brewdog.com
+- https://usa.brewdog.com
+- https://de.brewdog.com
+documents:
+- path: /.well-known/openid-configuration
+  spec: OpenID Connect Discovery 1.0
+  host: https://brewdog.com
+  status: 200
+  content_type: application/json; charset=utf-8
+  file: brewdog-openid-configuration.json
+  note: Shopify Customer Account OIDC. Issuer is https://shopify.com/authentication/82272813382
+    (BrewDog's Shopify shop id), served from BrewDog's own origin.
+- path: /.well-known/oauth-authorization-server
+  spec: RFC 8414 OAuth 2.0 Authorization Server Metadata
+  host: https://brewdog.com
+  status: 200
+  content_type: application/json; charset=utf-8
+  file: brewdog-oauth-authorization-server.json
+  note: Byte-identical to the openid-configuration document.
+- path: /.well-known/ucp
+  spec: Universal Commerce Protocol merchant profile (ucp.dev)
+  host: https://brewdog.com
+  status: 200
+  content_type: application/json; charset=utf-8
+  file: brewdog-ucp.json
+  note: Declares UCP 2026-04-08 (latest) and 2026-01-23, the dev.ucp.shopping service
+    over MCP, the checkout/cart/fulfillment/discount/order/catalog capabilities, and
+    the Google Pay / Shopify Card / Shop Pay payment handlers.
+- path: /.well-known/security.txt
+  spec: RFC 9116
+  host: https://brewdog.com
+  status: 404
+- path: /.well-known/agent-card.json
+  spec: A2A 1.0.0 Agent Card
+  host: https://brewdog.com
+  status: 404
+- path: /.well-known/agent.json
+  spec: A2A pre-0.3 legacy Agent Card
+  host: https://brewdog.com
+  status: 404
+- path: /.well-known/api-catalog
+  spec: RFC 9727
+  host: https://brewdog.com
+  status: 404
+- path: /.well-known/ai-plugin.json
+  host: https://brewdog.com
+  status: 404
+- path: /llms.txt
+  host: https://brewdog.com
+  status: 200
+  content_type: text/markdown; charset=utf-8
+  file: ../llms/brewdog-llms.txt
+- path: /agents.md
+  host: https://brewdog.com
+  status: 200
+  content_type: text/markdown; charset=utf-8
+  file: ../llms/brewdog-agents.md
+  note: BrewDog names /agents.md the canonical agent-facing description; /llms.txt
+    mirrors it. The only difference between the two fetched bodies is that sentence.
+- path: /sitemap_agentic_discovery.xml
+  host: https://brewdog.com
+  status: 200
+  content_type: application/xml; charset=utf-8
+  note: A dedicated agentic-discovery sitemap whose single entry is /agents.md.
+regional_hosts:
+- host: https://usa.brewdog.com
+  llms_txt: 200
+  agents_md: 200
+  ucp: 200
+  openid_configuration: 200
+  agent_card: 404
+- host: https://de.brewdog.com
+  llms_txt: 200
+  agents_md: 200
+  ucp: 200
+  openid_configuration: 200
+  agent_card: 404
+- host: https://api.brewdog.com
+  note: Resolves and serves robots.txt (200) but every /.well-known/*, /llms.txt and
+    /openapi.json probe returned 404. Not a developer API host.
+misses:
+- host: https://developer.brewdog.com
+  status: dns-nxdomain
+- host: https://developers.brewdog.com
+  status: dns-nxdomain
+x-evidence:
+  fetched: '2026-08-02'
+  method: curl HEAD/GET, following redirects, status recorded per path

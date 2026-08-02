@@ -1,0 +1,134 @@
+generated: '2026-08-02'
+method: searched
+status: published
+source: https://brewdog.com/.well-known/ucp
+docs: https://brewdog.com/agents.md
+server:
+  name: brewdog-ucp-shopping
+  protocol: Universal Commerce Protocol (UCP)
+  transport: http
+  url: https://brewdog.com/api/ucp/mcp
+  canonical_endpoint: https://b32dd2-83.myshopify.com/api/ucp/mcp
+  service: dev.ucp.shopping
+  versions:
+    default: '2026-04-08'
+    supported:
+    - '2026-04-08'
+    - '2026-01-23'
+  spec: https://ucp.dev/2026-04-08/specification/overview/
+  schema: https://ucp.dev/2026-04-08/services/shopping/mcp.openrpc.json
+  schema_file: brewdog-ucp-shopping-mcp.openrpc.json
+  platform: Shopify (shop id 82272813382)
+capabilities:
+- id: dev.ucp.shopping.cart
+  version: '2026-04-08'
+- id: dev.ucp.shopping.checkout
+  version: '2026-04-08'
+- id: dev.ucp.shopping.fulfillment
+  version: '2026-04-08'
+  config:
+    allows_multi_destination_shipping: false
+    allows_method_combinations:
+    - - shipping
+- id: dev.ucp.shopping.discount
+  version: '2026-04-08'
+- id: dev.ucp.shopping.order
+  version: '2026-04-08'
+- id: dev.ucp.shopping.catalog.search
+  version: '2026-04-08'
+- id: dev.ucp.shopping.catalog.lookup
+  version: '2026-04-08'
+- id: dev.shopify.catalog
+  version: '2026-04-08'
+  extends:
+  - dev.ucp.shopping.catalog.search
+  - dev.ucp.shopping.catalog.lookup
+payment_handlers:
+- id: gpay
+  handler: com.google.pay
+  version: '2026-01-11'
+  merchant_name: BrewDog
+  merchant_origin: brewdog.com
+  card_networks: [VISA, MASTERCARD, AMEX, DISCOVER]
+- id: shopify.card
+  handler: dev.shopify.card
+  version: '2026-01-15'
+  card_brands: [visa, master, american_express, discover, diners_club]
+- id: shop_pay
+  handler: dev.shopify.shop_pay
+  version: '2026-04-08'
+introspection:
+  tools_list: gated
+  observed_response: '{"jsonrpc":"2.0","id":1,"error":{"code":-32001,"message":"UCP
+    discovery failed","data":{"code":"invalid_profile_url","content":"Unable to fetch
+    agent profile: Missing profile uri"}}}'
+  http_status: 422
+  note: An anonymous MCP tools/list (and initialize) is rejected with -32001 until the
+    calling agent supplies a resolvable agent profile URI. The live per-tool
+    inputSchema therefore requires an identified agent. The tool list below is NOT
+    guessed — it is the method set of the OpenRPC schema BrewDog's own
+    /.well-known/ucp names as the schema for this endpoint.
+tools:
+- name: search_catalog
+  description: Search for products in the catalog
+  source: ucp-shopping-openrpc#search_catalog
+- name: lookup_catalog
+  description: Batch lookup products or variants by identifier
+  source: ucp-shopping-openrpc#lookup_catalog
+- name: get_product
+  description: Get product details
+  source: ucp-shopping-openrpc#get_product
+- name: create_cart
+  description: Create a cart
+  source: ucp-shopping-openrpc#create_cart
+- name: get_cart
+  description: Get cart
+  source: ucp-shopping-openrpc#get_cart
+- name: update_cart
+  description: Update cart
+  source: ucp-shopping-openrpc#update_cart
+- name: cancel_cart
+  description: Cancel cart
+  source: ucp-shopping-openrpc#cancel_cart
+- name: create_checkout
+  description: Create a checkout
+  source: ucp-shopping-openrpc#create_checkout
+- name: get_checkout
+  description: Get checkout
+  source: ucp-shopping-openrpc#get_checkout
+- name: update_checkout
+  description: Update checkout
+  source: ucp-shopping-openrpc#update_checkout
+- name: complete_checkout
+  description: Complete checkout and place order
+  source: ucp-shopping-openrpc#complete_checkout
+- name: cancel_checkout
+  description: Cancel checkout
+  source: ucp-shopping-openrpc#cancel_checkout
+- name: get_order
+  description: Get order
+  source: ucp-shopping-openrpc#get_order
+rules:
+- Checkout requires contemporaneous human approval; agents must not complete payment
+  without explicit buyer consent (stated in https://brewdog.com/agents.md).
+- The MCP endpoint is rate-limited per IP; back off on 429.
+- Pass context.address_country and context.currency for accurate pricing/availability.
+x-evidence:
+  fetched: '2026-08-02'
+  ucp_profile:
+    url: https://brewdog.com/.well-known/ucp
+    http_status: 200
+    content_type: application/json; charset=utf-8
+  mcp_endpoint:
+    url: https://brewdog.com/api/ucp/mcp
+    method: POST
+    body: '{"jsonrpc":"2.0","id":1,"method":"tools/list"}'
+    http_status: 422
+  openrpc_schema:
+    url: https://ucp.dev/2026-04-08/services/shopping/mcp.openrpc.json
+    http_status: 200
+    title: UCP Shopping Service
+    version: '2026-04-08'
+    methods: 13
+    note: Published by the UCP project, not by BrewDog. Stored here because BrewDog's
+      own merchant profile declares it as the schema for this endpoint.

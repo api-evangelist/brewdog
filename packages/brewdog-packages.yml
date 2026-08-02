@@ -1,0 +1,33 @@
+generated: '2026-08-02'
+method: searched
+source: npm registry search, PyPI, and the brewdog.com site
+summary:
+  official_packages: 0
+  note: BrewDog publishes no first-party client libraries or SDKs in any registry
+    searched, and no GitHub organisation. No type=SDKs pointer is emitted.
+packages: []
+registries_searched:
+- {registry: npm, query: brewdog, official_hits: 0}
+- {registry: pypi, query: brewdog, official_hits: 0}
+- {registry: github, query: 'github.com/brewdog', result: 'personal user account with
+    0 public repos; not the company'}
+third_party:
+  note: These exist in public registries and reference BrewDog, but are NOT first-party
+    and are NOT wired into apis.yml. Recorded so a later run does not mistake them
+    for official BrewDog software.
+  packages:
+  - {name: brewdog, registry: pypi, version: 1.0.1, author: Joakim Sorensen (ludeeus),
+     url: 'https://pypi.org/project/brewdog/', official: false}
+  - {name: brewdog-js, registry: npm, publisher: mikefrancis, description: 'A JS wrapper
+     for punkapi.com', official: false}
+  - {name: punkapi-db, registry: npm, publisher: samjbmason, description: "Raw data in
+     JSON format from BrewDog's DIY Dog", official: false}
+  - {name: punkapi-javascript-wrapper, registry: npm, publisher: brettdewoody, official: false}
+x-notes:
+- 'The widely cited "Punk API" (punkapi.com, api.punkapi.com/v2) is a THIRD-PARTY
+  project created by Sam Mason de Caires from BrewDog''s openly published DIY Dog
+  recipe archive. It is not operated by BrewDog, was discontinued in 2024, and
+  punkapi.com no longer resolves (DNS NXDOMAIN, probed 2026-08-02). It is deliberately
+  not listed as a BrewDog API.'
+x-evidence:
+  fetched: '2026-08-02'

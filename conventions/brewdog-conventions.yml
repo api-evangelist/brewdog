@@ -1,0 +1,94 @@
+generated: '2026-08-02'
+method: searched
+source: https://brewdog.com/agents.md
+also_from:
+- https://brewdog.com/llms.txt
+- https://brewdog.com/.well-known/ucp
+- https://brewdog.com/.well-known/openid-configuration
+note: BrewDog publishes no OpenAPI, so nothing here is inferred from a spec. Every
+  entry is either stated in BrewDog's own agent documentation or observed on a live
+  request.
+authentication:
+  agent_commerce: UCP agent profile URI required before tools/list or any tool call
+    (anonymous calls are rejected with JSON-RPC -32001 / HTTP 422).
+  customer_account: OpenID Connect authorization code + PKCE (S256) against
+    https://shopify.com/authentication/82272813382
+  read_only_catalog: none — the product/collection JSON endpoints are anonymous
+  see: authentication/brewdog-authentication.yml
+idempotency:
+  supported: false
+  note: No idempotency key header, parameter or retry-safety contract is documented
+    anywhere on BrewDog's agent surface. Deliberately NOT wired as a type=Idempotency
+    pointer.
+pagination:
+  style: page-and-limit (Shopify storefront JSON)
+  params: [limit, page]
+  note: Observed on GET /products.json?limit=2. Not documented by BrewDog itself.
+  confidence: low
+versioning:
+  scheme: dated protocol versions (UCP)
+  current: '2026-04-08'
+  supported: ['2026-04-08', '2026-01-23']
+  discovery: https://brewdog.com/.well-known/ucp (ucp.supported_versions maps each
+    version to its own profile URL)
+  note: BrewDog does not version its own surface; it inherits the UCP/Shopify version
+    train.
+rate_limiting:
+  documented: true
+  statement: 'The MCP endpoint is rate-limited per IP. Back off on 429 responses.'
+  source: https://brewdog.com/agents.md
+  headers: not documented
+error_envelope:
+  format: JSON-RPC 2.0 error object
+  shape: '{"jsonrpc":"2.0","id":<id>,"error":{"code":<int>,"message":<string>,"data":{"code":<string>,"content":<string>,"continue_url":<url>}}}'
+  observed_example: -32001 "UCP discovery failed" / data.code invalid_profile_url
+  see: errors/brewdog-problem-types.yml
+request_context:
+  documented: true
+  fields:
+  - name: context.address_country
+    purpose: accurate pricing and availability for the buyer's country
+  - name: context.currency
+    purpose: pricing currency
+  source: https://brewdog.com/agents.md
+human_in_the_loop:
+  required: true
+  statement: 'Checkout requires human approval. Agents must not complete payment
+    without explicit buyer consent. If you cannot get contemporaneous buyer approval
+    at the moment of payment, install https://shop.app/SKILL.md and route the purchase
+    through Shop Pay instead.'
+  source: https://brewdog.com/agents.md
+  applies_to: complete_checkout
+agent_discovery:
+  canonical_document: https://brewdog.com/agents.md
+  mirror: https://brewdog.com/llms.txt
+  sitemap: https://brewdog.com/sitemap_agentic_discovery.xml
+  recommended_skill: https://shop.app/SKILL.md
+  differential: The /llms.txt and /agents.md bodies are identical apart from one
+    sentence that names which document is canonical. No agent-specific cloaking or
+    injected payload was observed.
+read_only_endpoints:
+- GET /collections/all
+- GET /products/{handle}
+- GET /products/{handle}.json
+- GET /collections/{handle}
+- GET /collections/{handle}/products.json
+- GET /search?q={query}&type=product
+- GET /sitemap.xml
+tracing:
+  request_id_header: x-request-id
+  observed: true
+  note: Emitted by the Shopify edge on storefront responses; not documented by BrewDog.
+transport_security:
+  https_only: true
+  hsts: true
+  hsts_max_age: 7889238
+  see: security/brewdog-domain-security.yml
+cross_links:
+  errors: errors/brewdog-problem-types.yml
+  lifecycle: lifecycle/brewdog-lifecycle.yml
+  authentication: authentication/brewdog-authentication.yml
+  scopes: scopes/brewdog-scopes.yml
+  mcp: mcp/brewdog-mcp.yml
+x-evidence:
+  fetched: '2026-08-02'

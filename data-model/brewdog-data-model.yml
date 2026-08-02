@@ -1,0 +1,95 @@
+generated: '2026-08-02'
+method: derived
+source: examples/brewdog-products-json.json
+note: BrewDog publishes no OpenAPI and no object reference, so this entity graph is
+  derived from the field set of a real response fetched from
+  https://brewdog.com/products.json?limit=2 (HTTP 200). Every field listed below was
+  present in that response; nothing is inferred beyond it. The UCP cart/checkout/order
+  entities are named separately because they are defined by the UCP schemas BrewDog's
+  merchant profile points at, not by a BrewDog document.
+entities:
+- name: Product
+  source: GET /products.json, GET /products/{handle}.json
+  key: id
+  human_key: handle
+  fields:
+  - {name: id, type: integer}
+  - {name: title, type: string}
+  - {name: handle, type: string}
+  - {name: body_html, type: string}
+  - {name: vendor, type: string, note: observed value "BrewDog"}
+  - {name: product_type, type: string, note: 'e.g. Clothing'}
+  - {name: tags, type: array}
+  - {name: published_at, type: datetime}
+  - {name: created_at, type: datetime}
+  - {name: updated_at, type: datetime}
+  relationships:
+  - {kind: has_many, target: Variant, via: variants}
+  - {kind: has_many, target: Image, via: images}
+  - {kind: has_many, target: Option, via: options}
+- name: Variant
+  source: embedded in Product.variants
+  key: id
+  fields:
+  - {name: id, type: integer}
+  - {name: title, type: string}
+  - {name: sku, type: string}
+  - {name: price, type: string}
+  - {name: compare_at_price, type: string, nullable: true}
+  - {name: available, type: boolean}
+  - {name: grams, type: integer}
+  - {name: requires_shipping, type: boolean}
+  - {name: taxable, type: boolean}
+  - {name: position, type: integer}
+  - {name: option1, type: string, nullable: true}
+  - {name: option2, type: string, nullable: true}
+  - {name: option3, type: string, nullable: true}
+  - {name: created_at, type: datetime}
+  - {name: updated_at, type: datetime}
+  relationships:
+  - {kind: belongs_to, target: Product, via: product_id}
+  - {kind: has_one, target: Image, via: featured_image}
+- name: Image
+  source: embedded in Product.images
+  key: id
+  fields:
+  - {name: id, type: integer}
+  - {name: src, type: url}
+  - {name: width, type: integer}
+  - {name: height, type: integer}
+  - {name: position, type: integer}
+  - {name: variant_ids, type: array}
+  - {name: created_at, type: datetime}
+  - {name: updated_at, type: datetime}
+  relationships:
+  - {kind: belongs_to, target: Product, via: product_id}
+  - {kind: has_many, target: Variant, via: variant_ids}
+- name: Option
+  source: embedded in Product.options
+  fields:
+  - {name: name, type: string}
+  - {name: position, type: integer}
+  - {name: values, type: array}
+  relationships:
+  - {kind: belongs_to, target: Product, via: embedding}
+- name: Collection
+  source: GET /collections/{handle}/products.json
+  human_key: handle
+  relationships:
+  - {kind: has_many, target: Product, via: products}
+ucp_entities:
+  note: Defined by the UCP schemas that https://brewdog.com/.well-known/ucp declares.
+    Field-level detail is not reproduced here because the live tools/list is gated.
+  entities:
+  - {name: Cart, schema: https://ucp.dev/2026-04-08/schemas/shopping/cart.json}
+  - {name: Checkout, schema: https://ucp.dev/2026-04-08/schemas/shopping/checkout.json}
+  - {name: Fulfillment, schema: https://ucp.dev/2026-04-08/schemas/shopping/fulfillment.json}
+  - {name: Discount, schema: https://ucp.dev/2026-04-08/schemas/shopping/discount.json}
+  - {name: Order, schema: https://ucp.dev/2026-04-08/schemas/shopping/order.json}
+  - {name: CatalogSearch, schema: https://ucp.dev/2026-04-08/schemas/shopping/catalog_search.json}
+  - {name: CatalogLookup, schema: https://ucp.dev/2026-04-08/schemas/shopping/catalog_lookup.json}
+x-evidence:
+  fetched: '2026-08-02'
+  url: https://brewdog.com/products.json?limit=2
+  http_status: 200
+  content_type: application/json; charset=utf-8
