@@ -19,7 +19,7 @@ x-tier-reason: enrichment-pipeline
 x-notice: 'As published in the brewdog.com site footer (fetched 2026-08-02): "Clare
   Kennedy, Ian Partridge and Ben Browne were appointed Joint Administrators of BrewDog
   plc (the Company)." BrewDog PLC is operating in administration; see https://brewdog.com/pages/important-notice.'
-specificationVersion: '0.20'
+specificationVersion: '0.23'
 created: '2026-08-02'
 modified: '2026-08-02'
 tags:
