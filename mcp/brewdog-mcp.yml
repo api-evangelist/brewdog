@@ -49,25 +49,32 @@ payment_handlers:
   version: '2026-01-11'
   merchant_name: BrewDog
   merchant_origin: brewdog.com
-  card_networks: [VISA, MASTERCARD, AMEX, DISCOVER]
+  card_networks:
+  - VISA
+  - MASTERCARD
+  - AMEX
+  - DISCOVER
 - id: shopify.card
   handler: dev.shopify.card
   version: '2026-01-15'
-  card_brands: [visa, master, american_express, discover, diners_club]
+  card_brands:
+  - visa
+  - master
+  - american_express
+  - discover
+  - diners_club
 - id: shop_pay
   handler: dev.shopify.shop_pay
   version: '2026-04-08'
 introspection:
   tools_list: gated
-  observed_response: '{"jsonrpc":"2.0","id":1,"error":{"code":-32001,"message":"UCP
-    discovery failed","data":{"code":"invalid_profile_url","content":"Unable to fetch
-    agent profile: Missing profile uri"}}}'
+  observed_response: '{"jsonrpc":"2.0","id":1,"error":{"code":-32001,"message":"UCP discovery failed","data":{"code":"invalid_profile_url","content":"Unable
+    to fetch agent profile: Missing profile uri"}}}'
   http_status: 422
-  note: An anonymous MCP tools/list (and initialize) is rejected with -32001 until the
-    calling agent supplies a resolvable agent profile URI. The live per-tool
-    inputSchema therefore requires an identified agent. The tool list below is NOT
-    guessed — it is the method set of the OpenRPC schema BrewDog's own
-    /.well-known/ucp names as the schema for this endpoint.
+  note: An anonymous MCP tools/list (and initialize) is rejected with -32001 until the calling agent supplies
+    a resolvable agent profile URI. The live per-tool inputSchema therefore requires an identified agent.
+    The tool list below is NOT guessed — it is the method set of the OpenRPC schema BrewDog's own /.well-known/ucp
+    names as the schema for this endpoint.
 tools:
 - name: search_catalog
   description: Search for products in the catalog
@@ -109,8 +116,8 @@ tools:
   description: Get order
   source: ucp-shopping-openrpc#get_order
 rules:
-- Checkout requires contemporaneous human approval; agents must not complete payment
-  without explicit buyer consent (stated in https://brewdog.com/agents.md).
+- Checkout requires contemporaneous human approval; agents must not complete payment without explicit
+  buyer consent (stated in https://brewdog.com/agents.md).
 - The MCP endpoint is rate-limited per IP; back off on 429.
 - Pass context.address_country and context.currency for accurate pricing/availability.
 x-evidence:
@@ -130,5 +137,13 @@ x-evidence:
     title: UCP Shopping Service
     version: '2026-04-08'
     methods: 13
-    note: Published by the UCP project, not by BrewDog. Stored here because BrewDog's
-      own merchant profile declares it as the schema for this endpoint.
+    note: Published by the UCP project, not by BrewDog. Stored here because BrewDog's own merchant profile
+      declares it as the schema for this endpoint.
+deployment:
+  mode: remote
+  endpoint: https://brewdog.com/api/ucp/mcp
+  verified: probed
+  probe: live
+  tools: 13
+  checked: '2026-08-12'
+  source: catalog MCP census
