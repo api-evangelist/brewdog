@@ -28,6 +28,17 @@ tags:
 - Beer
 - Brewing
 - Retail
+- E-Commerce
+- Consumer Packaged Goods
+- Hospitality
+- Agentic Commerce
+- Shopify
+tags_raw:
+- Company
+- Food and Beverage
+- Beer
+- Brewing
+- Retail
 - eCommerce
 - Consumer Packaged Goods
 - Hospitality
@@ -64,6 +75,12 @@ apis:
   humanURL: https://brewdog.com/agents.md
   baseURL: https://brewdog.com
   tags:
+  - Product
+  - Catalog
+  - Retail
+  - JSON
+  - Read Only
+  tags_raw:
   - Products
   - Catalog
   - Retail
