@@ -11,6 +11,17 @@ description: 'BrewDog PLC (company no. SC311560) is a Scottish craft brewer, bar
   OpenID Connect discovery at /.well-known/openid-configuration, and unauthenticated
   read-only storefront product JSON endpoints that BrewDog documents for agents itself.'
 url: https://raw.githubusercontent.com/api-evangelist/brewdog/refs/heads/main/apis.yml
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: false
+  label: Hosted service · you call their endpoint
+  confidence: medium
+  source:
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 image: https://cdn.shopify.com/s/files/1/0822/7281/3382/files/BrewDogLogo.png?v=1724795739
 x-type: company
 x-source: harvest:secondary-market
