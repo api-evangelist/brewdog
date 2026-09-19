@@ -83,6 +83,12 @@ apis:
   tags:
   - Agentic Commerce
   - MCP
+  - Universal Commerce Protocol
+  - Shopping
+  - Checkout
+  tags_raw:
+  - Agentic Commerce
+  - MCP
   - UCP
   - Shopping
   - Checkout
