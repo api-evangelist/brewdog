@@ -97,6 +97,9 @@ apis:
     url: mcp/brewdog-mcp.yml
   - type: WellKnown
     url: well-known/brewdog-well-known.yml
+  x-surface: platform-generated
+  x-platform: shopify
+  x-platform-surface: ucp
 - name: BrewDog Storefront Product JSON
   description: 'The unauthenticated, read-only product and collection JSON surface of
     the brewdog.com Shopify storefront, documented by BrewDog for agents in
@@ -104,7 +107,6 @@ apis:
     GET /collections/{handle}/products.json and GET /search?q={query}&type=product.
     No API key is required and no OpenAPI description is published.'
   humanURL: https://brewdog.com/agents.md
-  baseURL: https://brewdog.com
   tags:
   - Product
   - Catalog
@@ -122,6 +124,9 @@ apis:
     url: examples/brewdog-products-json.json
   - type: DataModel
     url: data-model/brewdog-data-model.yml
+  x-surface: platform-generated
+  x-platform: shopify
+  x-platform-surface: storefront-json
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
