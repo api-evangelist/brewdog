@@ -46,7 +46,7 @@ x-notice: 'As published in the brewdog.com site footer (fetched 2026-08-02): "Cl
   plc (the Company)." BrewDog PLC is operating in administration; see https://brewdog.com/pages/important-notice.'
 specificationVersion: '0.23'
 created: '2026-08-02'
-modified: '2026-08-02'
+modified: '2026-10-06'
 tags:
 - Company
 - Food and Beverage
@@ -133,6 +133,8 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 common:
+- url: https://brewdog.com/blogs/news.atom
+  type: BlogRSS
 - type: DomainSecurity
   url: security/brewdog-domain-security.yml
 - type: Website
