@@ -64,34 +64,109 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-BrewDog PLC (company no. SC311560) is a Scottish craft brewer, bar and hotel operator
-headquartered in Ellon, Aberdeenshire. It runs no conventional developer program, but
-its direct-to-consumer store at brewdog.com is a Shopify storefront with a real,
-published agent-facing API surface.
+BrewDog PLC (company no. SC311560) is a Scottish craft brewer, bar and hotel operator headquartered at Balmacassie Commercial Park, Ellon, Aberdeenshire, known for Punk IPA, Hazy Jane and Lost Lager, its Equity for Punks crowdfunding rounds, and its openly published DIY Dog recipe archive. BrewDog does not run a conventional developer program, but its direct-to-consumer store at brewdog.com is a Shopify storefront that ships a real agent-facing API surface: a published /llms.txt and /agents.md, a Universal Commerce Protocol (UCP) merchant profile at /.well-known/ucp, a UCP-over-MCP endpoint at /api/ucp/mcp, Shopify Customer Account OpenID Connect discovery at /.well-known/openid-configuration, and unauthenticated read-only storefront product JSON endpoints that BrewDog documents for agents itself.
 
-- Website — https://www.brewdog.com/
-- Agent instructions — https://brewdog.com/agents.md (mirrored at /llms.txt)
+**Areas:** Company · Food and Beverage · Beer · Brewing · Retail · E-Commerce · Consumer Packaged Goods · Hospitality · Agentic Commerce · Shopify
 
-## API surface
+## BrewDog on APIs.io
 
-| Surface | Endpoint | Auth |
-|---|---|---|
-| Agentic commerce (UCP over MCP) | `https://brewdog.com/api/ucp/mcp` | UCP agent profile URI; buyer approval at payment |
-| UCP merchant profile | `https://brewdog.com/.well-known/ucp` | none |
-| Customer account OIDC discovery | `https://brewdog.com/.well-known/openid-configuration` | none (discovery) |
-| Storefront product JSON | `https://brewdog.com/products.json` and friends | none |
+Everything profiled for BrewDog is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/brewdog/](https://apis.io/providers/brewdog/)** — or go straight to one of the APIs or properties below.
 
-No OpenAPI, no AsyncAPI, no webhooks, no A2A agent card, no `security.txt` and no
-status page were found on any BrewDog host.
+### APIs (2)
 
-## Notes
+- [BrewDog Agentic Commerce (UCP over MCP)](https://apis.io/apis/brewdog/brewdog-agentic-commerce-ucp-over-mcp/) — BrewDog's Universal Commerce Protocol shopping service, exposed over MCP at https://brewdog.com/api/ucp/mcp and advertised by the store's own…
+- [BrewDog Storefront Product JSON](https://apis.io/apis/brewdog/brewdog-storefront-product-json/) — The unauthenticated, read-only product and collection JSON surface of the brewdog.com Shopify storefront, documented by BrewDog for agents in /llms.txt and…
 
-- **BrewDog PLC is in administration.** The brewdog.com footer states that Clare
-  Kennedy, Ian Partridge and Ben Browne were appointed Joint Administrators of
-  BrewDog plc. See https://brewdog.com/pages/important-notice.
-- The widely cited **Punk API** (punkapi.com) is a third-party project built on
-  BrewDog's openly published DIY Dog recipe archive. It is not a BrewDog API, it was
-  discontinued in 2024, and the domain no longer resolves. It is deliberately not
-  catalogued here.
-- Regional storefronts `usa.brewdog.com` and `de.brewdog.com` each serve their own
-  `/llms.txt`, `/agents.md` and `/.well-known/ucp`.
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [brewdog-ucp-shopping](https://apis.io/servers/brewdog/brewdog-ucp-shopping/)
+
+#### Examples (1)
+
+Example requests and responses.
+
+- [Brewdog Products Json](https://apis.io/examples/brewdog/brewdog-products-json/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Brewdog Authentication](https://apis.io/security/brewdog/brewdog-authentication/)
+- [Brewdog Domain Security](https://apis.io/security/brewdog/brewdog-domain-security/)
+
+#### OAuth scopes (1)
+
+The permissions the API asks for.
+
+- [Brewdog Scopes](https://apis.io/scopes/brewdog/brewdog-scopes/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://www.brewdog.com/)
+- [Documentation](https://brewdog.com/agents.md)
+- [Sign up](https://brewdog.com/account)
+- [Support](https://brewdog.com/pages/contact-us)
+- [Blog](https://brewdog.com/blogs/news)
+- [Terms of service](https://brewdog.com/pages/terms-and-conditions)
+- [Privacy policy](https://brewdog.com/pages/cookie-and-privacy-policy)
+
+## API Evangelist rating
+
+**Kin Score 26.3** — thin · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 66.7 |
+| Contract quality | 6.5 |
+| Contract governance | 18.2 |
+| Operational transparency | 0.0 |
+| Developer ergonomics | 30.4 |
+| Access clarity | 34.2 |
+
+**Agent readiness 10.6** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | — |
+| Agentic Access | — |
+| Reversibility Documented | — |
+| MCP Server | platform (partial credit) |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | documented (partial credit) |
+| OpenAPI Examples | documented (partial credit) |
+| Rate Limit Signal | — |
+| Event Surface Described | — |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | platform (partial credit) |
+
+**Regulatory alignment 34.3** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/brewdog/](https://apis.io/providers/brewdog/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for BrewDog: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/brewdog/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
